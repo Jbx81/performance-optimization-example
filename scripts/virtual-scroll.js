@@ -5,7 +5,7 @@
 
 class VirtualScroller {
     constructor() {
-        this.container = $('#virtual-container');
+        this.container = document.getElementById('virtual-container');
         this.data = [];
         this.itemHeight = 60;
         this.visibleItems = 10;
@@ -20,10 +20,14 @@ class VirtualScroller {
      * Initialize virtual scroller
      */
     init() {
-        this.generateData();
-        this.setupContainer();
-        this.render();
-        this.setupEventListeners();
+        try {
+            this.generateData();
+            this.setupContainer();
+            this.render();
+            this.setupEventListeners();
+        } catch (error) {
+            console.error('❌ Error initializing virtual scroller:', error);
+        }
     }
     
     /**
@@ -43,19 +47,26 @@ class VirtualScroller {
      * Setup container for virtual scrolling
      */
     setupContainer() {
-        if (!this.container) return;
-        
-        // Set container height
-        this.container.style.height = `${this.visibleItems * this.itemHeight}px`;
-        this.container.style.overflow = 'auto';
-        this.container.style.position = 'relative';
-        
-        // Create content wrapper
-        this.contentWrapper = document.createElement('div');
-        this.contentWrapper.style.height = `${this.data.length * this.itemHeight}px`;
-        this.contentWrapper.style.position = 'relative';
-        
-        this.container.appendChild(this.contentWrapper);
+        try {
+            if (!this.container) {
+                console.warn('⚠️ Virtual container not found');
+                return;
+            }
+            
+            // Set container height
+            this.container.style.height = `${this.visibleItems * this.itemHeight}px`;
+            this.container.style.overflow = 'auto';
+            this.container.style.position = 'relative';
+            
+            // Create content wrapper
+            this.contentWrapper = document.createElement('div');
+            this.contentWrapper.style.height = `${this.data.length * this.itemHeight}px`;
+            this.contentWrapper.style.position = 'relative';
+            
+            this.container.appendChild(this.contentWrapper);
+        } catch (error) {
+            console.error('❌ Error setting up virtual scroll container:', error);
+        }
     }
     
     /**
@@ -65,16 +76,16 @@ class VirtualScroller {
         if (!this.container) return;
         
         // Throttled scroll handler
-        const throttledScroll = PerformanceUtils.throttle((e) => {
+        const throttledScroll = window.PerformanceUtils?.throttle((e) => {
             this.handleScroll(e.target.scrollTop);
-        }, 16); // ~60fps
+        }, 16) || ((e) => { this.handleScroll(e.target.scrollTop); }); // ~60fps
         
         this.container.addEventListener('scroll', throttledScroll, { passive: true });
         
         // Resize handler
-        const throttledResize = PerformanceUtils.throttle(() => {
+        const throttledResize = window.PerformanceUtils?.throttle(() => {
             this.handleResize();
-        }, 100);
+        }, 100) || (() => { this.handleResize(); });
         
         window.addEventListener('resize', throttledResize, { passive: true });
     }
@@ -121,7 +132,10 @@ class VirtualScroller {
     render() {
         if (!this.contentWrapper) return;
         
-        PerformanceUtils.measurePerformance('Virtual Scroll Render', () => {
+        const measurePerformance = window.PerformanceUtils?.measurePerformance || ((name, fn) => fn());
+        const batchDOMUpdates = window.PerformanceUtils?.batchDOMUpdates || ((fn) => fn());
+        
+        measurePerformance('Virtual Scroll Render', () => {
             // Clear existing items
             this.contentWrapper.innerHTML = '';
             
@@ -135,7 +149,7 @@ class VirtualScroller {
             }
             
             // Batch DOM update
-            PerformanceUtils.batchDOMUpdates(() => {
+            batchDOMUpdates(() => {
                 this.contentWrapper.appendChild(fragment);
             });
         });
@@ -438,13 +452,28 @@ class VirtualScrollPerformanceMonitor {
 
 // Initialize virtual scrolling when DOM is ready
 document.addEventListener('DOMContentLoaded', () => {
-    window.virtualScroller = new VirtualScroller();
-    window.virtualScrollPerformanceMonitor = new VirtualScrollPerformanceMonitor(window.virtualScroller);
+    try {
+        // Check if the container exists before initializing
+        const container = document.getElementById('virtual-container');
+        if (container) {
+            window.virtualScroller = new VirtualScroller();
+            window.virtualScrollPerformanceMonitor = new VirtualScrollPerformanceMonitor(window.virtualScroller);
+            console.log('✅ Virtual scrolling initialized successfully');
+        } else {
+            console.warn('⚠️ Virtual container not found, skipping virtual scroll initialization');
+        }
+    } catch (error) {
+        console.error('❌ Error initializing virtual scrolling:', error);
+    }
 });
 
 // Cleanup on page unload
 window.addEventListener('beforeunload', () => {
-    if (window.virtualScroller) {
-        window.virtualScroller.cleanup();
+    try {
+        if (window.virtualScroller) {
+            window.virtualScroller.cleanup();
+        }
+    } catch (error) {
+        console.error('❌ Error cleaning up virtual scrolling:', error);
     }
 }); 

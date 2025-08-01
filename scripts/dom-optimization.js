@@ -50,7 +50,8 @@ class DOMOptimizer {
     addItemsSlow() {
         if (!this.itemsContainer) return;
         
-        PerformanceUtils.measurePerformance('Slow DOM Manipulation', () => {
+        const measurePerformance = window.PerformanceUtils?.measurePerformance || ((name, fn) => fn());
+        measurePerformance('Slow DOM Manipulation', () => {
             for (let i = 0; i < 1000; i++) {
                 const item = document.createElement('div');
                 item.className = 'item';
@@ -71,7 +72,8 @@ class DOMOptimizer {
     addItemsOptimized() {
         if (!this.itemsContainer) return;
         
-        PerformanceUtils.measurePerformance('Optimized DOM Manipulation', () => {
+        const measurePerformance = window.PerformanceUtils?.measurePerformance || ((name, fn) => fn());
+        measurePerformance('Optimized DOM Manipulation', () => {
             // Use DocumentFragment to batch DOM updates
             const fragment = document.createDocumentFragment();
             
@@ -98,7 +100,8 @@ class DOMOptimizer {
     clearItems() {
         if (!this.itemsContainer) return;
         
-        PerformanceUtils.measurePerformance('Clear Items', () => {
+        const measurePerformance = window.PerformanceUtils?.measurePerformance || ((name, fn) => fn());
+        measurePerformance('Clear Items', () => {
             // Use innerHTML for faster clearing
             this.itemsContainer.innerHTML = '';
             this.itemCount = 0;
@@ -126,13 +129,21 @@ class DOMOptimizer {
         this.renderVisibleItems(viewport, 0, visibleItems, totalItems);
         
         // Setup scroll listener
-        this.itemsContainer.addEventListener('scroll', PerformanceUtils.throttle((e) => {
+        const throttledScroll = window.PerformanceUtils?.throttle((e) => {
             const scrollTop = e.target.scrollTop;
             const startIndex = Math.floor(scrollTop / 60);
             const endIndex = Math.min(startIndex + visibleItems, totalItems);
             
             this.renderVisibleItems(viewport, startIndex, endIndex, totalItems);
-        }, 16));
+        }, 16) || ((e) => {
+            const scrollTop = e.target.scrollTop;
+            const startIndex = Math.floor(scrollTop / 60);
+            const endIndex = Math.min(startIndex + visibleItems, totalItems);
+            
+            this.renderVisibleItems(viewport, startIndex, endIndex, totalItems);
+        });
+        
+        this.itemsContainer.addEventListener('scroll', throttledScroll);
         
         this.itemsContainer.appendChild(viewport);
     }

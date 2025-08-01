@@ -74,7 +74,7 @@ class PerformanceTracker {
      */
     startMemoryTracking() {
         const updateMemory = () => {
-            const memory = PerformanceUtils.getMemoryUsage();
+            const memory = window.PerformanceUtils?.getMemoryUsage();
             
             if (memory && this.memoryUsage) {
                 const usagePercent = Math.round((memory.used / memory.limit) * 100);
@@ -104,7 +104,7 @@ class PerformanceTracker {
      */
     startDOMTracking() {
         const updateDOMNodes = () => {
-            const nodeCount = PerformanceUtils.countDOMNodes();
+            const nodeCount = window.PerformanceUtils?.countDOMNodes() || 0;
             
             if (this.domNodes) {
                 this.domNodes.textContent = nodeCount.toLocaleString();
@@ -181,8 +181,8 @@ class PerformanceTracker {
     getMetrics() {
         return {
             fps: this.fps,
-            memory: PerformanceUtils.getMemoryUsage(),
-            domNodes: PerformanceUtils.countDOMNodes(),
+            memory: window.PerformanceUtils?.getMemoryUsage(),
+            domNodes: window.PerformanceUtils?.countDOMNodes() || 0,
             timestamp: performance.now()
         };
     }

@@ -21,9 +21,11 @@ class PerformanceOptimizationApp {
         // Wait for DOM to be ready
         if (document.readyState === 'loading') {
             document.addEventListener('DOMContentLoaded', () => {
+                console.log('📋 DOM Content Loaded - Starting setup');
                 this.setupApplication();
             });
         } else {
+            console.log('📋 DOM already ready - Starting setup');
             this.setupApplication();
         }
     }
@@ -32,212 +34,266 @@ class PerformanceOptimizationApp {
      * Setup the application
      */
     setupApplication() {
-        this.initializeComponents();
-        this.setupGlobalEventListeners();
-        this.startPerformanceMonitoring();
-        this.createApplicationInterface();
-        
-        this.isInitialized = true;
-        console.log('✅ Performance Optimization Demo initialized successfully');
+        try {
+            console.log('🔧 Step 1: Initializing components...');
+            this.initializeComponents();
+            console.log('🔧 Step 2: Setting up global event listeners...');
+            this.setupGlobalEventListeners();
+            console.log('🔧 Step 3: Starting performance monitoring...');
+            this.startPerformanceMonitoring();
+            console.log('🔧 Step 4: Creating application interface...');
+            this.createApplicationInterface();
+            
+            this.isInitialized = true;
+            console.log('✅ Performance Optimization Demo initialized successfully');
+        } catch (error) {
+            console.error('❌ Error during application setup:', error);
+            // Don't let errors crash the page
+        }
     }
     
     /**
      * Initialize all components
      */
     initializeComponents() {
-        // Initialize performance tracking
-        if (window.performanceTracker) {
-            this.components.set('performanceTracker', window.performanceTracker);
+        try {
+            // Initialize performance tracking
+            if (window.performanceTracker) {
+                this.components.set('performanceTracker', window.performanceTracker);
+            }
+            
+            // Initialize event optimization
+            if (window.eventOptimizer) {
+                this.components.set('eventOptimizer', window.eventOptimizer);
+            }
+            
+            // Initialize lazy loading
+            if (window.lazyLoader) {
+                this.components.set('lazyLoader', window.lazyLoader);
+            }
+            
+            // Initialize DOM optimization
+            if (window.domOptimizer) {
+                this.components.set('domOptimizer', window.domOptimizer);
+            }
+            
+            // Initialize virtual scrolling
+            if (window.virtualScroller) {
+                this.components.set('virtualScroller', window.virtualScroller);
+            }
+            
+            console.log(`📦 Initialized ${this.components.size} components`);
+        } catch (error) {
+            console.error('❌ Error initializing components:', error);
         }
-        
-        // Initialize event optimization
-        if (window.eventOptimizer) {
-            this.components.set('eventOptimizer', window.eventOptimizer);
-        }
-        
-        // Initialize lazy loading
-        if (window.lazyLoader) {
-            this.components.set('lazyLoader', window.lazyLoader);
-        }
-        
-        // Initialize DOM optimization
-        if (window.domOptimizer) {
-            this.components.set('domOptimizer', window.domOptimizer);
-        }
-        
-        // Initialize virtual scrolling
-        if (window.virtualScroller) {
-            this.components.set('virtualScroller', window.virtualScroller);
-        }
-        
-        console.log(`📦 Initialized ${this.components.size} components`);
     }
     
     /**
      * Setup global event listeners
      */
     setupGlobalEventListeners() {
-        // Handle page visibility changes
-        document.addEventListener('visibilitychange', () => {
-            if (document.hidden) {
-                this.pauseExpensiveOperations();
-            } else {
-                this.resumeExpensiveOperations();
-            }
-        }, { passive: true });
-        
-        // Handle window focus/blur
-        window.addEventListener('focus', () => {
-            this.onWindowFocus();
-        }, { passive: true });
-        
-        window.addEventListener('blur', () => {
-            this.onWindowBlur();
-        }, { passive: true });
-        
-        // Handle online/offline status
-        window.addEventListener('online', () => {
-            this.onOnline();
-        }, { passive: true });
-        
-        window.addEventListener('offline', () => {
-            this.onOffline();
-        }, { passive: true });
+        try {
+            // Handle page visibility changes
+            document.addEventListener('visibilitychange', () => {
+                if (document.hidden) {
+                    this.pauseExpensiveOperations();
+                } else {
+                    this.resumeExpensiveOperations();
+                }
+            }, { passive: true });
+            
+            // Handle window focus/blur
+            window.addEventListener('focus', () => {
+                this.onWindowFocus();
+            }, { passive: true });
+            
+            window.addEventListener('blur', () => {
+                this.onWindowBlur();
+            }, { passive: true });
+            
+            // Handle online/offline status
+            window.addEventListener('online', () => {
+                this.onOnline();
+            }, { passive: true });
+            
+            window.addEventListener('offline', () => {
+                this.onOffline();
+            }, { passive: true });
+        } catch (error) {
+            console.error('❌ Error setting up global event listeners:', error);
+        }
     }
     
     /**
      * Start performance monitoring
      */
     startPerformanceMonitoring() {
-        // Monitor for performance issues
-        setInterval(() => {
-            this.checkPerformanceHealth();
-        }, 5000); // Every 5 seconds
-        
-        // Monitor for memory leaks
-        setInterval(() => {
-            this.checkMemoryUsage();
-        }, 10000); // Every 10 seconds
+        try {
+            // Monitor for performance issues
+            setInterval(() => {
+                try {
+                    this.checkPerformanceHealth();
+                } catch (error) {
+                    console.error('❌ Error in performance health check:', error);
+                }
+            }, 5000); // Every 5 seconds
+            
+            // Monitor for memory leaks
+            setInterval(() => {
+                try {
+                    this.checkMemoryUsage();
+                } catch (error) {
+                    console.error('❌ Error in memory usage check:', error);
+                }
+            }, 10000); // Every 10 seconds
+        } catch (error) {
+            console.error('❌ Error starting performance monitoring:', error);
+        }
     }
     
     /**
      * Create application interface
      */
     createApplicationInterface() {
-        this.createPerformancePanel();
-        this.createControlsPanel();
-        this.createInfoPanel();
+        try {
+            console.log('🔧 Creating performance panel...');
+            // Temporarily disable panel creation to test if panels are causing the issue
+            // this.createPerformancePanel();
+            console.log('🔧 Creating controls panel...');
+            // this.createControlsPanel();
+            console.log('🔧 Creating info panel...');
+            // this.createInfoPanel();
+            console.log('✅ All panels created successfully (disabled for testing)');
+        } catch (error) {
+            console.error('❌ Error creating application interface:', error);
+        }
     }
     
     /**
      * Create performance monitoring panel
      */
     createPerformancePanel() {
-        const panel = document.createElement('div');
-        panel.className = 'performance-panel';
-        panel.style.cssText = `
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background: rgba(0, 0, 0, 0.8);
-            color: white;
-            padding: 15px;
-            border-radius: 8px;
-            font-family: monospace;
-            font-size: 12px;
-            z-index: 1000;
-            min-width: 200px;
-        `;
-        
-        panel.innerHTML = `
-            <div style="margin-bottom: 10px; font-weight: bold;">Performance Monitor</div>
-            <div id="performance-stats"></div>
-        `;
-        
-        document.body.appendChild(panel);
-        
-        // Update stats every second
-        setInterval(() => {
-            this.updatePerformanceStats();
-        }, 1000);
+        try {
+            const panel = document.createElement('div');
+            panel.className = 'performance-panel';
+            panel.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: rgba(0, 0, 0, 0.8);
+                color: white;
+                padding: 15px;
+                border-radius: 8px;
+                font-family: monospace;
+                font-size: 12px;
+                z-index: 1000;
+                min-width: 200px;
+            `;
+            
+            panel.innerHTML = `
+                <div style="margin-bottom: 10px; font-weight: bold;">Performance Monitor</div>
+                <div id="performance-stats"></div>
+            `;
+            
+            document.body.appendChild(panel);
+            
+            // Update stats every second
+            setInterval(() => {
+                try {
+                    this.updatePerformanceStats();
+                } catch (error) {
+                    console.error('Error updating performance stats:', error);
+                }
+            }, 1000);
+        } catch (error) {
+            console.error('❌ Error creating performance panel:', error);
+        }
     }
     
     /**
      * Create controls panel
      */
     createControlsPanel() {
-        const panel = document.createElement('div');
-        panel.className = 'controls-panel';
-        panel.style.cssText = `
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: rgba(0, 0, 0, 0.8);
-            color: white;
-            padding: 15px;
-            border-radius: 8px;
-            z-index: 1000;
-        `;
-        
-        panel.innerHTML = `
-            <div style="margin-bottom: 10px; font-weight: bold;">Controls</div>
-            <button id="export-data" style="margin: 5px; padding: 5px 10px; background: #667eea; color: white; border: none; border-radius: 4px; cursor: pointer;">Export Data</button>
-            <button id="clear-cache" style="margin: 5px; padding: 5px 10px; background: #dc3545; color: white; border: none; border-radius: 4px; cursor: pointer;">Clear Cache</button>
-            <button id="performance-report" style="margin: 5px; padding: 5px 10px; background: #28a745; color: white; border: none; border-radius: 4px; cursor: pointer;">Performance Report</button>
-        `;
-        
-        document.body.appendChild(panel);
-        
-        // Add event listeners
-        document.getElementById('export-data')?.addEventListener('click', () => {
-            this.exportPerformanceData();
-        });
-        
-        document.getElementById('clear-cache')?.addEventListener('click', () => {
-            this.clearAllCaches();
-        });
-        
-        document.getElementById('performance-report')?.addEventListener('click', () => {
-            this.generatePerformanceReport();
-        });
+        try {
+            const panel = document.createElement('div');
+            panel.className = 'controls-panel';
+            panel.style.cssText = `
+                position: fixed;
+                bottom: 20px;
+                right: 20px;
+                background: rgba(0, 0, 0, 0.8);
+                color: white;
+                padding: 15px;
+                border-radius: 8px;
+                z-index: 1000;
+            `;
+            
+            panel.innerHTML = `
+                <div style="margin-bottom: 10px; font-weight: bold;">Controls</div>
+                <button id="export-data" style="margin: 5px; padding: 5px 10px; background: #667eea; color: white; border: none; border-radius: 4px; cursor: pointer;">Export Data</button>
+                <button id="clear-cache" style="margin: 5px; padding: 5px 10px; background: #dc3545; color: white; border: none; border-radius: 4px; cursor: pointer;">Clear Cache</button>
+                <button id="performance-report" style="margin: 5px; padding: 5px 10px; background: #28a745; color: white; border: none; border-radius: 4px; cursor: pointer;">Performance Report</button>
+            `;
+            
+            document.body.appendChild(panel);
+            
+            // Add event listeners
+            document.getElementById('export-data')?.addEventListener('click', () => {
+                this.exportPerformanceData();
+            });
+            
+            document.getElementById('clear-cache')?.addEventListener('click', () => {
+                this.clearAllCaches();
+            });
+            
+            document.getElementById('performance-report')?.addEventListener('click', () => {
+                this.generatePerformanceReport();
+            });
+        } catch (error) {
+            console.error('❌ Error creating controls panel:', error);
+        }
     }
     
     /**
      * Create info panel
      */
     createInfoPanel() {
-        const panel = document.createElement('div');
-        panel.className = 'info-panel';
-        panel.style.cssText = `
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            background: rgba(0, 0, 0, 0.8);
-            color: white;
-            padding: 15px;
-            border-radius: 8px;
-            max-width: 300px;
-            z-index: 1000;
-        `;
-        
-        panel.innerHTML = `
-            <div style="margin-bottom: 10px; font-weight: bold;">Performance Optimization Demo</div>
-            <div style="font-size: 12px; line-height: 1.4;">
-                This demo showcases senior frontend development skills including:
-                <ul style="margin: 10px 0; padding-left: 20px;">
-                    <li>Debouncing & Throttling</li>
-                    <li>Lazy Loading</li>
-                    <li>Virtual Scrolling</li>
-                    <li>DOM Optimization</li>
-                    <li>Performance Monitoring</li>
-                </ul>
-                <div style="margin-top: 10px; font-size: 10px; opacity: 0.7;">
-                    Check the browser console for detailed performance metrics.
+        try {
+            const panel = document.createElement('div');
+            panel.className = 'info-panel';
+            panel.style.cssText = `
+                position: fixed;
+                top: 20px;
+                left: 20px;
+                background: rgba(0, 0, 0, 0.8);
+                color: white;
+                padding: 15px;
+                border-radius: 8px;
+                max-width: 300px;
+                z-index: 1000;
+            `;
+            
+            panel.innerHTML = `
+                <div style="margin-bottom: 10px; font-weight: bold;">Performance Optimization Demo</div>
+                <div style="font-size: 12px; line-height: 1.4;">
+                    This demo showcases senior frontend development skills including:
+                    <ul style="margin: 10px 0; padding-left: 20px;">
+                        <li>Debouncing & Throttling</li>
+                        <li>Lazy Loading</li>
+                        <li>Virtual Scrolling</li>
+                        <li>DOM Optimization</li>
+                        <li>Performance Monitoring</li>
+                    </ul>
+                    <div style="margin-top: 10px; font-size: 10px; opacity: 0.7;">
+                        Check the browser console for detailed performance metrics.
+                    </div>
                 </div>
-            </div>
-        `;
-        
-        document.body.appendChild(panel);
+            `;
+            
+            document.body.appendChild(panel);
+        } catch (error) {
+            console.error('❌ Error creating info panel:', error);
+        }
     }
     
     /**
@@ -248,7 +304,7 @@ class PerformanceOptimizationApp {
         if (!statsElement) return;
         
         const metrics = window.performanceTracker?.getMetrics() || {};
-        const memory = PerformanceUtils.getMemoryUsage();
+        const memory = window.PerformanceUtils?.getMemoryUsage();
         
         statsElement.innerHTML = `
             <div>FPS: ${metrics.fps || 0}</div>
@@ -306,7 +362,7 @@ class PerformanceOptimizationApp {
                 height: window.innerHeight
             },
             performance: window.performanceTracker?.getMetrics(),
-            memory: PerformanceUtils.getMemoryUsage(),
+            memory: window.PerformanceUtils?.getMemoryUsage(),
             recommendations: this.getPerformanceRecommendations()
         };
         
@@ -339,7 +395,7 @@ class PerformanceOptimizationApp {
         }
         
         // Check memory usage
-        const memory = PerformanceUtils.getMemoryUsage();
+        const memory = window.PerformanceUtils?.getMemoryUsage();
         if (memory && memory.used > 50) {
             recommendations.push('High memory usage detected. Consider implementing memory cleanup.');
         }
@@ -369,7 +425,7 @@ class PerformanceOptimizationApp {
             }
         }
         
-        const memory = PerformanceUtils.getMemoryUsage();
+        const memory = window.PerformanceUtils?.getMemoryUsage();
         if (memory && memory.used > 100) {
             console.warn('⚠️ High memory usage:', memory.used, 'MB');
         }
@@ -379,7 +435,7 @@ class PerformanceOptimizationApp {
      * Check memory usage
      */
     checkMemoryUsage() {
-        const memory = PerformanceUtils.getMemoryUsage();
+        const memory = window.PerformanceUtils?.getMemoryUsage();
         if (memory) {
             const usagePercent = (memory.used / memory.limit) * 100;
             
@@ -518,8 +574,8 @@ Check the browser console for detailed performance information.
 // Export useful functions to global scope for debugging
 window.debug = {
     getPerformanceMetrics: () => window.performanceTracker?.getMetrics(),
-    getMemoryUsage: () => PerformanceUtils.getMemoryUsage(),
-    getDOMNodes: () => PerformanceUtils.countDOMNodes(),
+    getMemoryUsage: () => window.PerformanceUtils?.getMemoryUsage(),
+    getDOMNodes: () => window.PerformanceUtils?.countDOMNodes(),
     exportData: () => window.performanceReporter?.exportData(),
     getAppStatus: () => app.getStatus()
 }; 

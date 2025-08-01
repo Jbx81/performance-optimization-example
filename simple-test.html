@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Test</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f5f5f5;
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+        .metric-card {
+            background: white;
+            padding: 1rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin: 1rem 0;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <h1>Simple Test</h1>
+            <p>This should be visible</p>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="metric-card">
+            <h3>Test Card</h3>
+            <p>If you can see this, the basic HTML and CSS are working.</p>
+        </div>
+        
+        <div class="metric-card">
+            <h3>JavaScript Test</h3>
+            <p id="js-test">JavaScript not loaded yet...</p>
+        </div>
+    </main>
+
+    <script>
+        console.log('Simple test script loaded');
+        document.getElementById('js-test').textContent = 'JavaScript is working!';
+    </script>
+</body>
+</html> 

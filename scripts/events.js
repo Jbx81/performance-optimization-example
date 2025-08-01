@@ -30,9 +30,9 @@ class EventOptimizer {
         if (!this.searchInput) return;
         
         // Create debounced search function
-        const debouncedSearch = PerformanceUtils.debounce((query) => {
+        const debouncedSearch = window.PerformanceUtils?.debounce((query) => {
             this.performSearch(query);
-        }, 300); // 300ms delay
+        }, 300) || ((query) => { this.performSearch(query); }); // 300ms delay
         
         // Add event listener with passive option for better performance
         this.searchInput.addEventListener('input', (e) => {
@@ -67,7 +67,8 @@ class EventOptimizer {
         if (!this.searchResults) return;
         
         // Use performance measurement
-        PerformanceUtils.measurePerformance('Search Operation', () => {
+        const measurePerformance = window.PerformanceUtils?.measurePerformance || ((name, fn) => fn());
+        measurePerformance('Search Operation', () => {
             const results = this.searchData.filter(item => 
                 item.name.toLowerCase().includes(query.toLowerCase()) ||
                 item.description.toLowerCase().includes(query.toLowerCase())
@@ -88,23 +89,30 @@ class EventOptimizer {
         // Use DocumentFragment for better performance
         const fragment = document.createDocumentFragment();
         
+        const createElement = window.PerformanceUtils?.createElement || ((tag, attrs, text) => {
+            const el = document.createElement(tag);
+            if (attrs) Object.assign(el, attrs);
+            if (text) el.textContent = text;
+            return el;
+        });
+        
         if (results.length === 0) {
-            const noResults = PerformanceUtils.createElement('div', {
+            const noResults = createElement('div', {
                 className: 'search-result-item',
                 textContent: `No results found for "${query}"`
             });
             fragment.appendChild(noResults);
         } else {
             results.forEach(result => {
-                const resultItem = PerformanceUtils.createElement('div', {
+                const resultItem = createElement('div', {
                     className: 'search-result-item'
                 });
                 
-                const title = PerformanceUtils.createElement('h4', {
+                const title = createElement('h4', {
                     textContent: result.name
                 });
                 
-                const description = PerformanceUtils.createElement('p', {
+                const description = createElement('p', {
                     textContent: result.description
                 });
                 
@@ -115,7 +123,8 @@ class EventOptimizer {
         }
         
         // Batch DOM update
-        PerformanceUtils.batchDOMUpdates(() => {
+        const batchDOMUpdates = window.PerformanceUtils?.batchDOMUpdates || ((fn) => fn());
+        batchDOMUpdates(() => {
             this.searchResults.innerHTML = '';
             this.searchResults.appendChild(fragment);
         });
@@ -146,9 +155,9 @@ class EventOptimizer {
         if (!this.scrollContainer || !this.scrollIndicator) return;
         
         // Create throttled scroll handler
-        const throttledScroll = PerformanceUtils.throttle((e) => {
+        const throttledScroll = window.PerformanceUtils?.throttle((e) => {
             this.updateScrollIndicator(e.target.scrollTop);
-        }, 16); // ~60fps throttling
+        }, 16) || ((e) => { this.updateScrollIndicator(e.target.scrollTop); }); // ~60fps throttling
         
         // Add scroll event listener with passive option
         this.scrollContainer.addEventListener('scroll', throttledScroll, { passive: true });
@@ -165,7 +174,8 @@ class EventOptimizer {
         if (!this.scrollIndicator) return;
         
         // Use requestAnimationFrame for smooth updates
-        PerformanceUtils.requestAnimationFramePolyfill(() => {
+        const requestAnimationFramePolyfill = window.PerformanceUtils?.requestAnimationFramePolyfill || requestAnimationFrame;
+        requestAnimationFramePolyfill(() => {
             this.scrollIndicator.textContent = `Scroll Position: ${Math.round(scrollTop)}px`;
             
             // Add visual feedback based on scroll position
@@ -188,9 +198,9 @@ class EventOptimizer {
      */
     setupOptimizedEventListeners() {
         // Window resize with throttling
-        const throttledResize = PerformanceUtils.throttle(() => {
+        const throttledResize = window.PerformanceUtils?.throttle(() => {
             this.handleResize();
-        }, 100);
+        }, 100) || (() => { this.handleResize(); });
         
         window.addEventListener('resize', throttledResize, { passive: true });
         
@@ -200,9 +210,9 @@ class EventOptimizer {
         }, { passive: true });
         
         // Keyboard events with debouncing
-        const debouncedKeyHandler = PerformanceUtils.debounce((e) => {
+        const debouncedKeyHandler = window.PerformanceUtils?.debounce((e) => {
             this.handleKeyboardShortcuts(e);
-        }, 50);
+        }, 50) || ((e) => { this.handleKeyboardShortcuts(e); });
         
         document.addEventListener('keydown', debouncedKeyHandler, { passive: true });
     }
@@ -321,9 +331,12 @@ class EventDelegationManager {
         }
         
         const delegatedHandler = (e) => {
-            const target = e.target.closest(selector);
-            if (target) {
-                handler.call(target, e);
+            // Ensure e.target is an Element and has the closest method
+            if (e.target && e.target.closest && typeof e.target.closest === 'function') {
+                const target = e.target.closest(selector);
+                if (target) {
+                    handler.call(target, e);
+                }
             }
         };
         

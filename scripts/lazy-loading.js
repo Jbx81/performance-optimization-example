@@ -115,7 +115,8 @@ class LazyLoader {
         }
         
         // Batch DOM update
-        PerformanceUtils.batchDOMUpdates(() => {
+        const batchDOMUpdates = window.PerformanceUtils?.batchDOMUpdates || ((fn) => fn());
+        batchDOMUpdates(() => {
             this.imageGrid.appendChild(fragment);
         });
         
@@ -134,18 +135,25 @@ class LazyLoader {
      * @returns {Element} Image item element
      */
     createImageItem(imageData) {
-        const imageItem = PerformanceUtils.createElement('div', {
+        const createElement = window.PerformanceUtils?.createElement || ((tag, attrs, text) => {
+            const el = document.createElement(tag);
+            if (attrs) Object.assign(el, attrs);
+            if (text) el.textContent = text;
+            return el;
+        });
+        
+        const imageItem = createElement('div', {
             className: 'image-item'
         });
         
         // Create placeholder
-        const placeholder = PerformanceUtils.createElement('div', {
+        const placeholder = createElement('div', {
             className: 'image-placeholder',
             textContent: 'Loading...'
         });
         
         // Create image element
-        const img = PerformanceUtils.createElement('img', {
+        const img = createElement('img', {
             alt: imageData.alt,
             loading: 'lazy', // Native lazy loading
             'data-src': imageData.url // Use data-src for custom lazy loading
@@ -167,7 +175,23 @@ class LazyLoader {
      * @param {Element} placeholder - Placeholder element
      */
     setupImageObserver(imageItem, img, placeholder) {
-        const observer = PerformanceUtils.createIntersectionObserver(imageItem, (target) => {
+        const createIntersectionObserver = window.PerformanceUtils?.createIntersectionObserver || ((element, callback, options) => {
+            if ('IntersectionObserver' in window) {
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            callback(entry.target);
+                            observer.unobserve(entry.target);
+                        }
+                    });
+                }, options);
+                observer.observe(element);
+                return observer;
+            }
+            return null;
+        });
+        
+        const observer = createIntersectionObserver(imageItem, (target) => {
             this.loadImage(img, placeholder);
         }, {
             rootMargin: '50px', // Start loading 50px before image is visible
@@ -192,7 +216,8 @@ class LazyLoader {
         
         tempImg.onload = () => {
             // Use requestAnimationFrame for smooth transition
-            PerformanceUtils.requestAnimationFramePolyfill(() => {
+            const requestAnimationFramePolyfill = window.PerformanceUtils?.requestAnimationFramePolyfill || requestAnimationFrame;
+            requestAnimationFramePolyfill(() => {
                 img.src = imageUrl;
                 img.classList.add('loaded');
                 
