@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Performance Optimization Demo - Senior Frontend Developer Skills">
+    <title>Performance Optimization Demo</title>
+    
+    <!-- Preload critical resources -->
+    <link rel="preload" href="styles/main.css" as="style">
+    <link rel="preload" href="scripts/main.js" as="script">
+    
+    <!-- Critical CSS inline for above-the-fold content -->
+    <style>
+        /* Critical CSS for initial render */
+        body {
+            margin: 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #333;
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 2rem;
+        }
+    </style>
+    
+    <!-- Non-critical CSS loaded asynchronously -->
+    <link rel="stylesheet" href="styles/main.css" media="print" onload="this.media='all'">
+    <noscript><link rel="stylesheet" href="styles/main.css"></noscript>
+</head>
+<body>
+    <!-- Header with optimized semantic structure -->
+    <header class="header" role="banner">
+        <div class="container">
+            <h1>Performance Optimization Demo</h1>
+            <p>Senior Frontend Developer Skills Showcase</p>
+        </div>
+    </header>
+
+    <main class="container" role="main">
+        <!-- Performance Metrics Section -->
+        <section class="metrics-section">
+            <h2>Performance Metrics</h2>
+            <div class="metrics-grid">
+                <div class="metric-card">
+                    <h3>FPS Counter</h3>
+                    <div class="metric-value" id="fps-counter">--</div>
+                </div>
+                <div class="metric-card">
+                    <h3>Memory Usage</h3>
+                    <div class="metric-value" id="memory-usage">--</div>
+                </div>
+                <div class="metric-card">
+                    <h3>DOM Nodes</h3>
+                    <div class="metric-value" id="dom-nodes">--</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Event Handling Optimization Section -->
+        <section class="optimization-section">
+            <h2>Event Handling Optimization</h2>
+            <div class="demo-grid">
+                <div class="demo-card">
+                    <h3>Debounced Search</h3>
+                    <input type="text" id="debounced-search" placeholder="Type to search (debounced)">
+                    <div class="search-results" id="search-results"></div>
+                </div>
+                <div class="demo-card">
+                    <h3>Throttled Scroll</h3>
+                    <div class="scroll-container" id="scroll-container">
+                        <div class="scroll-content">
+                            <p>Scroll this container to see throttled event handling</p>
+                            <div class="scroll-indicator" id="scroll-indicator">Scroll Position: 0</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Lazy Loading Section -->
+        <section class="lazy-section">
+            <h2>Lazy Loading Demo</h2>
+            <div class="image-grid" id="image-grid">
+                <!-- Images will be dynamically added with lazy loading -->
+            </div>
+            <button id="load-more-images" class="btn btn-primary">Load More Images</button>
+        </section>
+
+        <!-- DOM Manipulation Optimization -->
+        <section class="dom-section">
+            <h2>DOM Manipulation Optimization</h2>
+            <div class="demo-controls">
+                <button id="add-items" class="btn">Add 1000 Items (Slow)</button>
+                <button id="add-items-optimized" class="btn btn-success">Add 1000 Items (Optimized)</button>
+                <button id="clear-items" class="btn btn-danger">Clear All</button>
+            </div>
+            <div class="items-container" id="items-container"></div>
+        </section>
+
+        <!-- CSS Performance Demo -->
+        <section class="css-section">
+            <h2>CSS Performance Demo</h2>
+            <div class="css-demo">
+                <div class="animated-element" id="animated-element">
+                    <span>Hover me for optimized animations</span>
+                </div>
+                <div class="transform-demo">
+                    <div class="transform-element" id="transform-element">
+                        <span>Transform Demo</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Virtual Scrolling Demo -->
+        <section class="virtual-section">
+            <h2>Virtual Scrolling Demo</h2>
+            <div class="virtual-container" id="virtual-container">
+                <!-- Virtual scrolling content will be generated here -->
+            </div>
+        </section>
+    </main>
+
+    <!-- Loading indicator -->
+    <div class="loading" id="loading">
+        <div class="spinner"></div>
+        <p>Loading...</p>
+    </div>
+
+    <!-- Scripts loaded at end of body for better performance -->
+    <script src="scripts/utils.js"></script>
+    <script src="scripts/performance.js"></script>
+    <script src="scripts/events.js"></script>
+    <script src="scripts/lazy-loading.js"></script>
+    <script src="scripts/dom-optimization.js"></script>
+    <script src="scripts/virtual-scroll.js"></script>
+    <script src="scripts/main.js"></script>
+</body>
+</html> 
